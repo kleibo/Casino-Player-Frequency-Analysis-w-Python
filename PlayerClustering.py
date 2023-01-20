@@ -1,10 +1,12 @@
 import pandas as pd
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+import os
 
 class PlayerClustering:
     def __init__(self, player_data_file):
         self.player_data = pd.read_csv(player_data_file)
+        self.file_directory = os.path.dirname(player_data_file)
         self.model = None
 
     def createClusters(self):
@@ -41,3 +43,9 @@ class PlayerClustering:
         plt.ylabel("total Theo (USD)")
         plt.legend()
         plt.show()
+
+    def saveResults(self, file_name):
+        high_frequency_players, low_frequency_players = self.get_clusters()
+        high_frequency_players.to_csv(self.file_directory + "/" + file_name + "_high_frequency_players.csv")
+        low_frequency_players.to_csv(self.file_directory + "/" + file_name + "_low_frequency_players.csv")
+        plt.savefig(self.file_directory + "/" + file_name + ".png")
