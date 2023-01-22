@@ -2,14 +2,31 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import PlayerClustering
 
-# Open a file dialog to select the player data file
-root = Tk()
-root.withdraw()
-filepath = askopenfilename()
+class Main:
+    def __init__(self):
+        self.filepath = ""
 
-# Create a PlayerClustering object and cluster the players
-clustering = PlayerClustering.PlayerClustering(filepath)
-clustering.create_clusters()
+    
+    # Open a file dialog to select the player data file
+    def openFileDialog(self):
+        root = Tk()
+        root.withdraw()
+        filepath = askopenfilename()
+        # Check if the user selected a file
+        if not self.filepath:
+            print("No file selected. Exiting program.")
+            exit()   
 
-# Plot the clusters
-clustering.plot_clusters()
+    def runClustering(self):
+        clustering = PlayerClustering.PlayerClustering(self.filepath)
+        # Create a PlayerClustering object and cluster the players
+        clustering.create_clusters()
+        # Plot the clusters
+        clustering.plot_clusters()
+        # Save Results
+        clustering.saveResults()
+
+if __name__ == "__main__":
+    main = Main()
+    main.openFileDialog()
+    main.runClustering()
